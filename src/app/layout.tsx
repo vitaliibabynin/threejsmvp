@@ -20,6 +20,7 @@ export const metadata: Metadata = {
 };
 
 const menuItems = [
+  { label: 'Home', href: '#home' },
   { label: 'Benefits', href: '#benefits' },
   { label: '3D Model', href: '#model' },
   { label: 'Testimonials', href: '#testimonials' },
@@ -36,7 +37,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-900 text-purple-300`}
       >
-        <Navbar menuItems={menuItems} currentSection="#home" />
+        <Navbar menuItems={menuItems} />
         <main className="min-h-screen">{children}</main>
       </body>
     </html>

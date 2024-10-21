@@ -11,20 +11,43 @@ interface NavItem {
 
 interface NavbarProps {
   menuItems: NavItem[]
-  currentSection: string
 }
 
-const Navbar: React.FC<NavbarProps> = ({ menuItems, currentSection }) => {
+const Navbar: React.FC<NavbarProps> = ({ menuItems }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
+  const [activeSection, setActiveSection] = useState('')
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 0)
+
+      const sections = menuItems.map(item => item.href.slice(1))
+      const currentSection = sections.find(section => {
+        const element = document.getElementById(section)
+        if (element) {
+          const rect = element.getBoundingClientRect()
+          return rect.top <= 100 && rect.bottom >= 100
+        }
+        return false
+      })
+
+      if (currentSection) {
+        setActiveSection(currentSection)
+      }
     }
+
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+  }, [menuItems])
+
+  const scrollToSection = (href: string) => {
+    const element = document.querySelector(href)
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' })
+    }
+    setIsOpen(false)
+  }
 
   return (
     <nav className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-gray-900/90 backdrop-blur-sm' : 'bg-transparent'}`}>
@@ -41,22 +64,25 @@ const Navbar: React.FC<NavbarProps> = ({ menuItems, currentSection }) => {
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-4">
               {menuItems.map((item) => (
-                <Link
+                <button
                   key={item.label}
-                  href={item.href}
+                  onClick={() => scrollToSection(item.href)}
                   className={`text-purple-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium ${
-                    currentSection === item.href ? 'bg-gray-700 text-white' : ''
+                    activeSection === item.href.slice(1) ? 'bg-gray-700 text-white' : ''
                   }`}
                 >
                   {item.label}
-                </Link>
+                </button>
               ))}
             </div>
           </div>
 
           {/* Book a Demo Button */}
           <div className="hidden md:block">
-            <button className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md text-sm font-medium">
+            <button
+              onClick={() => scrollToSection('#cta')}
+              className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md text-sm font-medium"
+            >
               Book a Demo
             </button>
           </div>
@@ -86,17 +112,20 @@ const Navbar: React.FC<NavbarProps> = ({ menuItems, currentSection }) => {
       <div className={`md:hidden ${isOpen ? 'block' : 'hidden'}`}>
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
           {menuItems.map((item) => (
-            <Link
+            <button
               key={item.label}
-              href={item.href}
-              className={`text-purple-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium ${
-                currentSection === item.href ? 'bg-gray-700 text-white' : ''
+              onClick={() => scrollToSection(item.href)}
+              className={`text-purple-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium w-full text-left ${
+                activeSection === item.href.slice(1) ? 'bg-gray-700 text-white' : ''
               }`}
             >
               {item.label}
-            </Link>
+            </button>
           ))}
-          <button className="mt-4 w-full bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md text-sm font-medium">
+          <button
+            onClick={() => scrollToSection('#cta')}
+            className="mt-4 w-full bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md text-sm font-medium"
+          >
             Book a Demo
           </button>
         </div>
