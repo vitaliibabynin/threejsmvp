@@ -68,10 +68,10 @@ export default function Home() {
           videoSrc="/videos/hero-background.mp4"
         />
       </section>
-      <section id="benefits">
+      <section id="benefits" className="py-16">
         <Benefits benefits={benefits} />
       </section>
-      <section id="model" className="py-16 bg-gray-900">
+      <section id="model" className="py-16">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-white mb-8 text-center">Interactive 3D Model</h2>
           <div className="max-w-4xl mx-auto">
@@ -79,10 +79,10 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section id="testimonials">
+      <section id="testimonials" className="py-16">
         <Testimonials testimonials={testimonials} />
       </section>
-      <section id="cta">
+      <section id="cta" className="py-16">
         <CTA 
           headline="Ready to Transform Your Industrial Planning?"
           subheadline="Book a demo today and see how our 3D modeling solutions can revolutionize your operations."
