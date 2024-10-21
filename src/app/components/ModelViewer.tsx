@@ -99,8 +99,8 @@ const ModelViewer: React.FC<ModelViewerProps> = ({
         const size = box.getSize(new THREE.Vector3())
         const maxDim = Math.max(size.x, size.y, size.z)
         const fov = camera.fov * (Math.PI / 180)
-        let cameraZ = Math.abs(maxDim / 2 * Math.tan(fov / 2))
-        camera.position.z = cameraZ * 2
+        const cameraZ = Math.abs(maxDim / 2 * Math.tan(fov / 2)) * 2 // Changed from let to const
+        camera.position.z = cameraZ
         camera.updateProjectionMatrix()
 
         setIsLoading(false) // Set loading to false when the model is loaded
