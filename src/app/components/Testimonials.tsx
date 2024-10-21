@@ -36,7 +36,7 @@ const Testimonials: React.FC<TestimonialsProps> = ({ testimonials }) => {
             <div className="flex transition-transform duration-300 ease-in-out" style={{ transform: `translateX(-${currentIndex * 100}%)` }}>
               {testimonials.map((testimonial, index) => (
                 <div key={index} className="w-full flex-shrink-0">
-                  <div className="bg-gray-700 rounded-lg p-8 shadow-lg">
+                  <div className="bg-gray-700 rounded-lg p-8 px-12 shadow-lg">
                     <div className="flex items-center mb-4">
                       {testimonial.imageUrl && (
                         <Image
