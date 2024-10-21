@@ -20,9 +20,10 @@ export const metadata: Metadata = {
 };
 
 const menuItems = [
-  { label: 'Services', href: '#services' },
+  { label: 'Benefits', href: '#benefits' },
+  { label: '3D Model', href: '#model' },
   { label: 'Testimonials', href: '#testimonials' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Contact', href: '#cta' },
 ]
 
 export default function RootLayout({
