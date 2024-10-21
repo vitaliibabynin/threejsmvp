@@ -1,6 +1,7 @@
 import Hero from './components/Hero'
 import Testimonials from './components/Testimonials'
 import CTA from './components/CTA'
+import ModelViewer from './components/ModelViewer'
 
 const testimonials = [
   {
@@ -31,7 +32,15 @@ export default function Home() {
         subheadline="Expert 3D modeling solutions for your business"
         videoSrc="/videos/hero-background.mp4"
       />
-      {/* Other sections will be added here */}
+      {/* ModelViewer section */}
+      <section className="py-16 bg-gray-900">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold text-white mb-8 text-center">Interactive 3D Model</h2>
+          <div className="max-w-4xl mx-auto">
+            <ModelViewer modelPath="/models/industrial_installation.glb" />
+          </div>
+        </div>
+      </section>
       <Testimonials testimonials={testimonials} />
       <CTA 
         headline="Ready to Transform Your Industrial Planning?"
