@@ -1,5 +1,6 @@
 import Hero from './components/Hero'
 import Testimonials from './components/Testimonials'
+import CTA from './components/CTA'
 
 const testimonials = [
   {
@@ -30,8 +31,13 @@ export default function Home() {
         subheadline="Expert 3D modeling solutions for your business"
         videoSrc="/videos/hero-background.mp4"
       />
-      <Testimonials testimonials={testimonials} />
       {/* Other sections will be added here */}
+      <Testimonials testimonials={testimonials} />
+      <CTA 
+        headline="Ready to Transform Your Industrial Planning?"
+        subheadline="Book a demo today and see how our 3D modeling solutions can revolutionize your operations."
+        buttonText="Book a Demo"
+      />
     </>
   )
 }
