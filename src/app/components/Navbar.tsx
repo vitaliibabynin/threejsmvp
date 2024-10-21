@@ -33,7 +33,7 @@ const Navbar: React.FC<NavbarProps> = ({ menuItems, currentSection }) => {
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link href="/">
-              <Image src="/logo.png" alt="Company Logo" width={40} height={40} />
+              <Image src="/images/logo.png" alt="Company Logo" width={40} height={40} />
             </Link>
           </div>
 
