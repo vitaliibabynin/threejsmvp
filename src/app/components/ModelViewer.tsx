@@ -22,7 +22,6 @@ const ModelViewer: React.FC<ModelViewerProps> = ({
 
     // Scene setup
     const scene = new THREE.Scene()
-    scene.background = new THREE.Color(0x111827) // Dark background to match the site theme
 
     // Camera setup
     const camera = new THREE.PerspectiveCamera(75, containerRef.current.clientWidth / containerRef.current.clientHeight, 0.1, 1000)
@@ -31,14 +30,44 @@ const ModelViewer: React.FC<ModelViewerProps> = ({
     // Renderer setup
     const renderer = new THREE.WebGLRenderer({ antialias: true })
     renderer.setSize(containerRef.current.clientWidth, containerRef.current.clientHeight)
+    renderer.shadowMap.enabled = true
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap
     containerRef.current.appendChild(renderer.domElement)
 
     // Lighting
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
     scene.add(ambientLight)
     const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8)
-    directionalLight.position.set(0, 10, 0)
+    directionalLight.position.set(5, 10, 5)
+    directionalLight.castShadow = true
     scene.add(directionalLight)
+
+    // Sky
+    const skyGeometry = new THREE.SphereGeometry(500, 32, 32)
+    const skyMaterial = new THREE.MeshBasicMaterial({
+      color: 0x87CEEB,  // Light blue color
+      side: THREE.BackSide
+    })
+    const sky = new THREE.Mesh(skyGeometry, skyMaterial)
+    scene.add(sky)
+
+    // Ground (Grass)
+    const textureLoader = new THREE.TextureLoader()
+    const grassTexture = textureLoader.load('/textures/grass.png')
+    grassTexture.wrapS = THREE.RepeatWrapping
+    grassTexture.wrapT = THREE.RepeatWrapping
+    grassTexture.repeat.set(100, 100)
+
+    const groundGeometry = new THREE.PlaneGeometry(1000, 1000)
+    const groundMaterial = new THREE.MeshStandardMaterial({
+      map: grassTexture,
+      roughness: 1,
+      metalness: 0
+    })
+    const ground = new THREE.Mesh(groundGeometry, groundMaterial)
+    ground.rotation.x = -Math.PI / 2
+    ground.receiveShadow = true
+    scene.add(ground)
 
     // Controls
     const controls = new OrbitControls(camera, renderer.domElement)
@@ -52,10 +81,19 @@ const ModelViewer: React.FC<ModelViewerProps> = ({
       (gltf) => {
         scene.add(gltf.scene)
         
+        // Enable shadows for the model
+        gltf.scene.traverse((child) => {
+          if (child instanceof THREE.Mesh) {
+            child.castShadow = true
+            child.receiveShadow = true
+          }
+        })
+        
         // Center the model
         const box = new THREE.Box3().setFromObject(gltf.scene)
         const center = box.getCenter(new THREE.Vector3())
         gltf.scene.position.sub(center)
+        gltf.scene.position.y += box.getSize(new THREE.Vector3()).y / 2 // Lift model to sit on ground
         
         // Adjust camera to fit the model
         const size = box.getSize(new THREE.Vector3())
